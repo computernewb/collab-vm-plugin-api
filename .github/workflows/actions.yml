@@ -1,0 +1,38 @@
+name: CollabVM Plugin API
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+        fail-fast: false
+        matrix:
+          os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+
+      - uses: actions/checkout@v1
+        with: 
+          submodules: true
+
+      - name: Install Dependencies And Setup LLVM (Ubuntu)
+        id: depends-n-llvm
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+             sudo apt install -y cmake ninja-build
+             sudo bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+          fi
+        shell: bash
+
+      - name: Build
+        id: build
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+                  cmake -B build -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCOLLABVM_BUILD_FEATURES=sampleplugins
+                  cmake --build build
+          elif [ "$RUNNER_OS" == "Windows" ]; then
+                  cmake -B build -A x64 -G "Visual Studio 17 2022" -T ClangCl -DCMAKE_BUILD_TYPE=Release -DCOLLABVM_BUILD_FEATURES=sampleplugins
+                  cmake --build build
+          fi
+        shell: bash
