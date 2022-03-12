@@ -1,0 +1,9 @@
+[submodule "vendor/EABase"]
+	path = vendor/EABase
+	url = https://github.com/computernewb/EABase.git
+[submodule "vendor/EAStdC"]
+	path = vendor/EAStdC
+	url = https://github.com/computernewb/EAStdC.git
+[submodule "vendor/EASTL"]
+	path = vendor/EASTL
+	url = https://github.com/computernewb/EASTL.git

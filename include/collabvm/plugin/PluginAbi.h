@@ -11,7 +11,7 @@
 // Essentially "CollabVM COM", except without a baked in factory pattern or true-baseclass pattern.
 
 // TODO: This file should be installed with the collab-vm-server
-// 	in e.g: $PREFIX/include/collab-vm/
+// 	in e.g: $PREFIX/include/collabvm/
 
 #ifndef COLLAB_VM_SERVER_PLUGINABI_H
 #define COLLAB_VM_SERVER_PLUGINABI_H
