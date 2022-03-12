@@ -8,7 +8,7 @@
 
 // A basic hello world plugin. Does not really implement anything useful.
 
-#include <PluginAPI.h>
+#include <collabvm/plugin/PluginAPI.h>
 
 // Symbols imported or are expected to exist for the
 // common plugin code.

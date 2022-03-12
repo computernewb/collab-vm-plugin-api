@@ -13,9 +13,22 @@ project(collab-vm-plugin-api)
 
 set(CMAKE_CXX_STANDARD 20)
 
+# TODO: Include our EASTL
+
+# plugin API
+add_library(collabvm_plugin_api INTERFACE)
+target_include_directories(collabvm_plugin_api INTERFACE ${PROJECT_SOURCE_DIR}/include)
+add_library(collabvm::plugin_api ALIAS collabvm_plugin_api)
+
+# Common code for plugins. Also provides the machinery to 
+# use the plugin API headers in plugins. Clients link explicitly
+# to collabvm::plugin_api.
+add_subdirectory(src/plugincommon)
+
 # Add plugin common code and sample plugins
 # if requested in the CMake invocation
 if("sampleplugins" IN_LIST COLLABVM_BUILD_FEATURES)
     message(STATUS "Including sample plugin source code into the build")
     add_subdirectory(src/sampleplugins)
 endif()
+

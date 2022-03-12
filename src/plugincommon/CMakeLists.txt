@@ -5,11 +5,9 @@ add_library(collabvm_plugincommon
 		AbiImplementation.cpp
         )
 
-# Limit plugincommon to include/plugin,
-# to simulate a typical installation environment.
-target_include_directories(collabvm_plugincommon PUBLIC ${PROJECT_SOURCE_DIR}/include/plugin)
-
-add_library(collabvm::plugin_common ALIAS collabvm_plugincommon)
+target_link_libraries(collabvm_plugincommon collabvm::plugin_api)
 
 set_property(TARGET collabvm_plugincommon
 		PROPERTY POSITION_INDEPENDENT_CODE ON)
+
+add_library(collabvm::plugin_common ALIAS collabvm_plugincommon)

@@ -10,8 +10,8 @@
 // to be implemented by plugins, for the user.
 // Also provides a helper global plugin API instance.
 
-#include <PluginAbi.h>
-#include <PluginAPI.h>
+#include <collabvm/plugin/PluginAbi.h>
+#include <collabvm/plugin/PluginAPI.h>
 
 #include <cstring>
 
