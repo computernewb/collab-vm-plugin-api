@@ -20,6 +20,9 @@ add_library(collabvm_plugin_api INTERFACE)
 target_include_directories(collabvm_plugin_api INTERFACE ${PROJECT_SOURCE_DIR}/include)
 add_library(collabvm::plugin_api ALIAS collabvm_plugin_api)
 
+# Vendor libraries. These are used by both the Plugin API and the server.
+add_subdirectory(vendor)
+
 # Common code for plugins. Also provides the machinery to 
 # use the plugin API headers in plugins. Clients link explicitly
 # to collabvm::plugin_api.

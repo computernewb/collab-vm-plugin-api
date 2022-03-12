@@ -1,0 +1,3 @@
+add_library(collabvm_eastl_support SHARED vsprintf.cpp)
+
+target_link_libraries(collabvm_eastl_support PRIVATE EABase)
