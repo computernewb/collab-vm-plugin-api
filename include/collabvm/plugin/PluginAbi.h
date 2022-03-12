@@ -17,7 +17,7 @@
 #define COLLAB_VM_SERVER_PLUGINABI_H
 
 #include <cstdint>
-#include <utility> // std::forward
+//#include <utility> // std::forward
 //#include "VtFunction.h"
 
 // Make a detail name of a vtfunc.
@@ -36,7 +36,7 @@
 	Retty (*_COLLABVM_PLUGINABI_NAME_VTFUNC(name))(This*, ##args) { nullptr };        \
 	template<class... Args>                                                           \
 	constexpr Retty name(Args&&... a) {                                               \
-		return _COLLABVM_PLUGINABI_NAME_VTFUNC(name)(this, std::forward<Args>(a)...); \
+		return _COLLABVM_PLUGINABI_NAME_VTFUNC(name)(this, static_cast<Args&&>(a)...); \
 	}
 
 // Assign a vtfunc. Should be used to assign functions to an interface's vtfuncs

@@ -106,6 +106,8 @@ namespace collabvm::plugin {
 		COLLABVM_PLUGINABI_DEFINE_VTFUNC(IPluginApi, void*, Malloc, std::size_t size);
 		COLLABVM_PLUGINABI_DEFINE_VTFUNC(IPluginApi, void, Free, void* ptr);
 
+		// TODO: Add api to register vm plugins? This might be a good place to do it tbh
+
 		// TODO: more vtfuncs, for e.g: new way of handling usermessages (by doing serialization in-plugin)
 		
 
@@ -114,7 +116,7 @@ namespace collabvm::plugin {
 
 		template<class T, class ...Args>
 		inline T* New(Args&&... args) {
-			return new (Malloc(sizeof(T))) T(std::forward<Args>(args)...);
+			return new (Malloc(sizeof(T))) T(static_cast<Args&&>(args)...);
 		}
 
 		template<class T>

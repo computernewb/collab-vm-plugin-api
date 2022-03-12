@@ -25,6 +25,9 @@ static IPluginApi pluginApiInstance;
  */
 IPluginApi* g_PluginApi = &pluginApiInstance;
 
+// Imports expected to exist in plugin code linking this library
+extern PluginMetadata g_PluginMetadata;
+
 // Exported CollabVM C Plugin ABI functions
 extern "C" {
 
@@ -32,7 +35,12 @@ COLLABVM_PLUGINABI_EXPORT int collabvm_plugin_abi_version() {
 	return collabvm::plugin::PLUGIN_ABI_VERSION;
 }
 
-// TODO: ABI symbol for Boost.ASIO headers
+COLLABVM_PLUGINABI_EXPORT collabvm::plugin::PluginMetadata* collabvm_plugin_get_metadata() {
+	return &g_PluginMetadata;
+}
+
+// TODO: ABI symbol for Boost.ASIO headers.
+// Either that or slam it into IPluginAPI and allow collabvm_plugin_init_api to return bool.
 
 COLLABVM_PLUGINABI_EXPORT void collabvm_plugin_init_api(IPluginApi* apiPointer) {
 	// Copy the API data CollabVM gave us into our instance.

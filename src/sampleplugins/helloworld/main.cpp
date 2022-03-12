@@ -10,15 +10,18 @@
 
 #include <collabvm/plugin/PluginAPI.h>
 
+// this isn't the standard library so it's OK
+using namespace collabvm::plugin;
+
 // Symbols imported or are expected to exist for the
 // common plugin code.
-extern collabvm::plugin::IPluginApi* g_PluginApi;
+extern IPluginApi* g_PluginApi;
 
 // The plugin implementation class.
 struct HelloWorld : public collabvm::plugin::IServerPlugin {
 
 	void InitImpl() {
-		g_PluginApi->WriteLogMessage(collabvm::plugin::IPluginApi::LogLevel::Info, u8"Hello, CollabVM World!");
+		g_PluginApi->WriteLogMessage(IPluginApi::LogLevel::Info, u8"Hello, CollabVM World!");
 	}
 
 	HelloWorld() : IServerPlugin() {
@@ -26,33 +29,28 @@ struct HelloWorld : public collabvm::plugin::IServerPlugin {
 		COLLABVM_PLUGINABI_ASSIGN_VTFUNC(Init, &HelloWorld::InitImpl);
 
 		// Any pre-initialization your plugin needs to do can be implemented here.
+		// In the case of VM plugins, you can install the VM interface here.
 	}
 
 	~HelloWorld() {
-		g_PluginApi->WriteLogMessage(collabvm::plugin::IPluginApi::LogLevel::Info, u8"Goodbye, CollabVM World!");
+		g_PluginApi->WriteLogMessage(IPluginApi::LogLevel::Info, u8"Goodbye, CollabVM World!");
 		// Your plugin can close any resources it has opened here as well.
 	}
 
 };
 
+// Fill out metadata for your plugin here.
+// Make sure the ID is unique!
+collabvm::plugin::PluginMetadata g_PluginMetadata {
+	.PluginId = u8"helloworld",
+	.PluginName = u8"Hello World",
+	.PluginDescription = u8"A programmer's delight!",
+	.PluginAuthor = u8"CollabVM Core Team",
+	.PluginLicense = u8"GNU LGPLv3",
+	.PluginVersion = u8"N/A"
+};
+
 extern "C" {
-
-// NOTE: couldn't this be implemented in the ABI impl?
-// just ask for a global metadata symbol there
-
-COLLABVM_PLUGINABI_EXPORT collabvm::plugin::PluginMetadata* collabvm_plugin_get_metadata() {
-	// Fill out metadata for your plugin here.
-	// Make sure the ID is unique!
-	static collabvm::plugin::PluginMetadata metadata {
-		.PluginId = u8"helloworld",
-		.PluginName = u8"Hello World",
-		.PluginDescription = u8"A programmer's delight!",
-		.PluginAuthor = u8"CollabVM Core Team",
-		.PluginLicense = u8"GNU LGPLv3",
-		.PluginVersion = u8"N/A"
-	};
-	return &metadata;
-}
 
 COLLABVM_PLUGINABI_EXPORT collabvm::plugin::IServerPlugin* collabvm_plugin_make_serverplugin() {
 	return g_PluginApi->New<HelloWorld>();
