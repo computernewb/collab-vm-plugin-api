@@ -21,14 +21,14 @@
 // - Better passing of.. well, anything, between plugin/server boundaries.
 //	 (or way of indicating lifetime expectation which is ABI safe, e.g: Copied<T*> or ExpectedToLast<T*>)
 // - Better passing of string data.
-//	 (length / ptr pair?)
+//	 (length / ptr pair?) We should probably use eastl::string_view
 // - Pointers shouldn't mean "optional values", we should use STL vocab types for this
 //	(e.g: eastl::optional<T>, or if optional isn't abi safe enough, our own abstraction which explicitly converts)
 //
 // NB: We can use our pinned EASTL version for all of these.
 //
 // Real TODO's:
-//	plugin(or core?)::Signal<R(Args...)>. 
+//	Signal<R(Args...)>. 
 //		Connecting a function to a signal means on signalObj(args...), that all of the connected functions will fire in order.
 //		For vocabulary reasons, Signal::operator() == Signal::emit(), and emit() can be used if so desired to spell it out.
 //
@@ -89,7 +89,7 @@ namespace collabvm::plugin {
 	/**
 	 * Basic plugin interface.
 	 *
-	 * Consumed by coreplugins or regular plugins
+	 * Consumed by all CollabVM plugins.
 	 */
 	struct IPluginApi {
 
@@ -99,6 +99,8 @@ namespace collabvm::plugin {
 			Error
 		};
 
+		// UTILITY FUNCTIONS
+
 		COLLABVM_PLUGINABI_DEFINE_VTFUNC(IPluginApi, void, WriteLogMessage, IPluginApi::LogLevel level, const utf8char* format, ...);
 
 
@@ -106,14 +108,9 @@ namespace collabvm::plugin {
 		COLLABVM_PLUGINABI_DEFINE_VTFUNC(IPluginApi, void*, Malloc, std::size_t size);
 		COLLABVM_PLUGINABI_DEFINE_VTFUNC(IPluginApi, void, Free, void* ptr);
 
-		// TODO: Add api to register vm plugins? This might be a good place to do it tbh
-
-		// TODO: more vtfuncs, for e.g: new way of handling usermessages (by doing serialization in-plugin)
-		
 
 		// a shoddy hack because global operators do nothing.
 		// Only use these on the plugin side, please.
-
 		template<class T, class ...Args>
 		inline T* New(Args&&... args) {
 			return new (Malloc(sizeof(T))) T(static_cast<Args&&>(args)...);
@@ -126,6 +123,19 @@ namespace collabvm::plugin {
 				Free(ptr);
 			}
 		}
+
+
+		// VM registration functions
+
+
+		// ....
+
+		// TODO: Add api to register vm plugins? This might be a good place to do it tbh
+
+		// TODO: more vtfuncs, for e.g: new way of handling usermessages (by doing serialization in-plugin)
+		
+
+
 	};
 
 	/**
