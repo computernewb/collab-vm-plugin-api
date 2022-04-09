@@ -1,0 +1,19 @@
+{
+  "name": "collab-vm-plugin-api",
+  "version": "3.0.0-pre",
+  "description": "CollabVM 3 Mock Plugin API and tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/computernewb/collab-vm-plugin-api.git"
+  },
+  "author": "modeco80",
+  "license": "LGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/computernewb/collab-vm-plugin-api/issues"
+  },
+  "homepage": "https://github.com/computernewb/collab-vm-plugin-api#readme"
+}
